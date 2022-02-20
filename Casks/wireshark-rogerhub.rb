@@ -1,4 +1,4 @@
-cask "wireshark" do
+cask "wireshark-rogerhub" do
   url_arch, livecheck_arch = Hardware::CPU.intel? ? ["Intel", "x86-"] : ["Arm", "arm"]
 
   version "3.6.2"
@@ -25,8 +25,8 @@ cask "wireshark" do
   depends_on macos: ">= :sierra"
 
   app "Wireshark.app"
-  pkg "Add Wireshark to the system path.pkg"
-  pkg "Install ChmodBPF.pkg"
+  # pkg "Add Wireshark to the system path.pkg"
+  # pkg "Install ChmodBPF.pkg"
   binary "#{appdir}/Wireshark.app/Contents/MacOS/capinfos"
   binary "#{appdir}/Wireshark.app/Contents/MacOS/captype"
   binary "#{appdir}/Wireshark.app/Contents/MacOS/dftest"
@@ -68,20 +68,20 @@ cask "wireshark" do
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man4/extcap.4"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man4/wireshark-filter.4"
 
-  uninstall_preflight do
-    system_command "/usr/sbin/installer",
-                   args: [
-                     "-pkg", "#{staged_path}/Uninstall ChmodBPF.pkg",
-                     "-target", "/"
-                   ],
-                   sudo: true
-    system_command "/usr/sbin/installer",
-                   args: [
-                     "-pkg", "#{staged_path}/Remove Wireshark from the system path.pkg",
-                     "-target", "/"
-                   ],
-                   sudo: true
-  end
+  # uninstall_preflight do
+  #   system_command "/usr/sbin/installer",
+  #                  args: [
+  #                    "-pkg", "#{staged_path}/Uninstall ChmodBPF.pkg",
+  #                    "-target", "/"
+  #                  ],
+  #                  sudo: true
+  #   system_command "/usr/sbin/installer",
+  #                  args: [
+  #                    "-pkg", "#{staged_path}/Remove Wireshark from the system path.pkg",
+  #                    "-target", "/"
+  #                  ],
+  #                  sudo: true
+  # end
 
   uninstall pkgutil: "org.wireshark.*"
 
