@@ -2,9 +2,18 @@ cask "wireshark-rogerhub" do
   arch arm: "Arm", intel: "Intel"
   livecheck_arch = on_arch_conditional arm: "arm", intel: "x86-"
 
-  version "4.0.4"
-  sha256 arm:   "6434479defbb2edd6457b9f395c119799310e4675f9fe1145df40c1266bda5e4",
-         intel: "86f14b2b839a9d2793ce9c0531ddab70e31475541fa9744f26ac8b1227dd29cc"
+  version "4.2.0"
+
+  on_arm do
+    sha256 "d2fba92c2f88271fad6929e8d8d06d50992fd82e00230c9f503c57a4bfe4f54f"
+
+    depends_on macos: ">= :big_sur"
+  end
+  on_intel do
+    sha256 "9e10e57a24ea5c8f66fa6dab8d9b21751e8b370d9ef2a5f4be8b6c29dc4437b6"
+
+    depends_on macos: ">= :high_sierra"
+  end
 
   url "https://2.na.dl.wireshark.org/osx/Wireshark%20#{version}%20#{arch}%2064.dmg"
   name "Wireshark"
@@ -19,7 +28,6 @@ cask "wireshark-rogerhub" do
   auto_updates true
   conflicts_with cask:    "wireshark-chmodbpf",
                  formula: "wireshark"
-  depends_on macos: ">= :sierra"
 
   app "Wireshark.app"
   # pkg "Add Wireshark to the system path.pkg"
@@ -47,7 +55,6 @@ cask "wireshark-rogerhub" do
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/capinfos.1"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/captype.1"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/ciscodump.1"
-  manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/dftest.1"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/dumpcap.1"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/editcap.1"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man1/etwdump.1"
@@ -67,17 +74,13 @@ cask "wireshark-rogerhub" do
 
   # uninstall_preflight do
   #   system_command "/usr/sbin/installer",
-  #                  args: [
-  #                    "-pkg", "#{staged_path}/Uninstall ChmodBPF.pkg",
-  #                    "-target", "/"
-  #                  ],
-  #                  sudo: true
+  #                  args:         ["-pkg", "#{staged_path}/Uninstall ChmodBPF.pkg", "-target", "/"],
+  #                  sudo:         true,
+  #                  sudo_as_root: true
   #   system_command "/usr/sbin/installer",
-  #                  args: [
-  #                    "-pkg", "#{staged_path}/Remove Wireshark from the system path.pkg",
-  #                    "-target", "/"
-  #                  ],
-  #                  sudo: true
+  #                  args:         ["-pkg", "#{staged_path}/Remove Wireshark from the system path.pkg", "-target", "/"],
+  #                  sudo:         true,
+  #                  sudo_as_root: true
   # end
 
   uninstall pkgutil: "org.wireshark.*"
