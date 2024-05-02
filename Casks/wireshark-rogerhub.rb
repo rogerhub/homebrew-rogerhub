@@ -1,18 +1,19 @@
+# XXX
 cask "wireshark-rogerhub" do
   arch arm: "Arm", intel: "Intel"
   livecheck_arch = on_arch_conditional arm: "arm", intel: "x86-"
 
-  version "4.2.0"
+  version "4.2.4"
 
   on_arm do
-    sha256 "d2fba92c2f88271fad6929e8d8d06d50992fd82e00230c9f503c57a4bfe4f54f"
+    sha256 "93c874a00c3f436bb0a234dd170e30fb3a966736aea7590013e48a1eeb612a01"
 
     depends_on macos: ">= :big_sur"
   end
   on_intel do
-    sha256 "9e10e57a24ea5c8f66fa6dab8d9b21751e8b370d9ef2a5f4be8b6c29dc4437b6"
+    sha256 "00f6f08652263d4a93249ff1ba8fdff28de16806184d9d26e0dba1ab8b9ed604"
 
-    depends_on macos: ">= :high_sierra"
+    depends_on macos: ">= :mojave"
   end
 
   url "https://2.na.dl.wireshark.org/osx/Wireshark%20#{version}%20#{arch}%2064.dmg"
@@ -20,9 +21,14 @@ cask "wireshark-rogerhub" do
   desc "Network protocol analyzer"
   homepage "https://www.wireshark.org/"
 
+  # This appcast sometimes uses a newer pubDate for an older version, so we
+  # have to ignore the default `Sparkle` strategy sorting (which involves the
+  # pubDate) and simply work with the version numbers.
   livecheck do
     url "https://www.wireshark.org/update/0/Wireshark/0.0.0/macOS/#{livecheck_arch}64/en-US/stable.xml"
-    strategy :sparkle
+    strategy :sparkle do |items|
+      items.map(&:nice_version)
+    end
   end
 
   auto_updates true
@@ -30,6 +36,7 @@ cask "wireshark-rogerhub" do
                  formula: "wireshark"
 
   app "Wireshark.app"
+  # XXX
   # pkg "Add Wireshark to the system path.pkg"
   # pkg "Install ChmodBPF.pkg"
   binary "#{appdir}/Wireshark.app/Contents/MacOS/capinfos"
@@ -72,6 +79,7 @@ cask "wireshark-rogerhub" do
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man4/extcap.4"
   manpage "#{appdir}/Wireshark.app/Contents/Resources/share/man/man4/wireshark-filter.4"
 
+  # XXX
   # uninstall_preflight do
   #   system_command "/usr/sbin/installer",
   #                  args:         ["-pkg", "#{staged_path}/Uninstall ChmodBPF.pkg", "-target", "/"],
